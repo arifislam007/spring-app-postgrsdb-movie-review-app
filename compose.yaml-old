@@ -1,0 +1,36 @@
+version: '3.8' 
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - spring-app
+
+  spring-app:
+    build: .  # Replace with the path to your Spring Boot project
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/dsi
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - db
+    restart: on-failure
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: postgres
+      POSTGRES_DB: dsi
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount your SQL script
+    restart: always
+
+volumes:
+  db-data:
+
