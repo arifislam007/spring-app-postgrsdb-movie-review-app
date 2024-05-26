@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app-deployment
+  namespace: spring-app
+  labels:
+    app: spring-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-app
+  template:
+    metadata:
+      labels:
+        app: spring-app
+    spec:
+      containers:
+      - name: spring-app
+        image: arifislam/spring-app  # Replace with the path to your Spring Boot project
+        ports:
+        - containerPort: 4022
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:postgresql://db-service:5432/dsi
+        - name: SPRING_DATASOURCE_USERNAME
+          value: postgres
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: root
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-app-service
+  namespace: spring-app
+spec:
+  type: NodePort
+  ports:
+  - port: 4022
+    targetPort: 4022
+    nodePort: 30082
+  selector:
+    app: spring-app
+

@@ -1,0 +1,36 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: spring-app-gateway
+  namespace: spring-app
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: spring-app
+  namespace: spring-app
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - spring-app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /app
+    route:
+    - destination:
+        host: spring-app-service.spring-app.svc.cluster.local
+        port:
+          number: 4022
+
