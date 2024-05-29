@@ -16,12 +16,12 @@ spec:
     spec:
       containers:
       - name: spring-app
-        image: arifislam/spring-app  # Replace with the path to your Spring Boot project
+        image: arifislam/spring:v4  # Replace with the path to your Spring Boot project
         ports:
         - containerPort: 4022
         env:
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:postgresql://db-service:5432/dsi
+          value: jdbc:postgresql://db:5432/dsi
         - name: SPRING_DATASOURCE_USERNAME
           value: postgres
         - name: SPRING_DATASOURCE_PASSWORD
@@ -36,7 +36,6 @@ spec:
   ports:
   - port: 4022
     targetPort: 4022
-    nodePort: 30082
+    nodePort: 30091
   selector:
     app: spring-app
-
