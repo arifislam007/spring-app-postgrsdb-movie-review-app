@@ -26,19 +26,15 @@ spec:
           value: postgres
         - name: POSTGRES_DB
           value: dsi
-        resources:
-          requests:
-            memory: "128Mi"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: db-service
+  name: db
 spec:
-  type: ClusterIP
+        #  type: NodePort
   ports:
   - port: 5432
     targetPort: 5432
   selector:
     app: db
-
