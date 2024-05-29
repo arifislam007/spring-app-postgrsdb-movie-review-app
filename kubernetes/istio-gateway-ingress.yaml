@@ -25,10 +25,9 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /app
+        prefix: /
     route:
     - destination:
-        host: spring-app-service.spring-app.svc.cluster.local
+        host: spring-app-service
         port:
           number: 4022
-
